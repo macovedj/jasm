@@ -8,12 +8,9 @@ const parser = async () => {
   .filter(x => x.length > 0)
   .join(' ')
   .split('')
-  console.log(text)
 
   const tokens = text.reduce((acc, cur) => {
     let {curToken, tokenized} = acc
-    // console.log({tokenized})
-    // console.log({curToken})
     switch(cur) {
       case "(":
         tokenized.push({ type: tokenTypes.LPAR, value: "("})
@@ -84,9 +81,7 @@ const parser = async () => {
         return acc
     }
   }, {curToken: [], tokenized: []})
-  console.log(tokens.tokenized)
-  return tokens
+  return tokens.tokenized
 }
 
-parser()
 module.exports = {parser}

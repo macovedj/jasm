@@ -1,34 +1,27 @@
-
 const { parser } = require('./parser')
+const { astBuilder } = require('./ast')
 
-const compileFunction = async ({input, bytes}) => {
-
-}
-
-const compile = async ({input, bytes, numberOfFuncs}) => {
-  console.log({input, bytes, numberOfFuncs})
-  console.log(input[0])
+const compile = async (tokens) => {
+  console.log(astBuilder(tokens))
   // if (input[0] !== '(') throw new Error(`INVALID EXPRESSION, MUST START WITH '(', INSTEAD GOT "${input[0]}"`)
   // if (input[input.length - 1] !== ')') throw new Error(`INVALID EXPRESSION, MUST END WITH ')', INSTEAD GOT "${input[input.length - 1]}"`)
-  const re = /\((.*?)\(/
-  const token = input.match(re)[0].trim().substr(1)
-  console.log({token})
+  // const re = /\((.*?)\(/
+  // const token = input.match(re)[0].trim().substr(1)
 
-  // const curToken = input[0]
-  switch(curToken) {
-    case "(module":
-      bytes += "0061736d01000000"
-      input = input.substr(1,input.length)
-  }
+
+  // switch(curToken) {
+  //   case "(module":
+  //     bytes += "0061736d01000000"
+  //     input = input.substr(1,input.length)
+  // }
 
   // const output = input
-  return compile({input, bytes, numberOfFuncs})
+  return "COMPILE"
 }
 
 const execute = async () => {
   const tokens = await parser()
-  console.log(tokens)
-  return compile({input: tokens, bytes: "", numberOfFuncs})
+  return compile(tokens)
 }
 
 
