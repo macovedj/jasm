@@ -8,7 +8,8 @@ const tokenTypes = {
   PARAM: "PARAM",
   RESULT: "RESULT",
   LITERAL: "LITERAL",
-  LOCAL_GET: "LOCAL_GET"
+  LOCAL_GET: "LOCAL_GET",
+  ADD_I32: "ADD_I32"
 }
 
 module.exports = { tokenTypes }

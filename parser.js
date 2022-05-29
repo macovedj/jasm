@@ -38,8 +38,13 @@ const parser = async () => {
           case "local.get":
             tokenized.push({type: tokenTypes.LOCAL_GET, value: "local.get"})
             break;
+          case "i32.add":
+            tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
+            break;
           default:
-            tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
+            if (curToken.join('') !== '') {
+              tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
+            }
             break;
         }
         tokenized.push({ type: tokenTypes.RPAR, value: ")"})
@@ -68,7 +73,7 @@ const parser = async () => {
             tokenized.push({type: tokenTypes.LOCAL_GET, value: "local.get"})
             return {curToken: [], tokenized}
           case "i32.add":
-            tokenized.push({type: tokenTypes.LOCAL_GET, value: "local.get"})
+            tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
             return {curToken: [], tokenized}
           case "":
             return {curToken: [], tokenized}
