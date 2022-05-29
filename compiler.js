@@ -29,9 +29,20 @@ const compile = async (tokens) => {
         returnByte = '7f'
         break
     }
-    bytes += numOfParams + paramBytes + '01' + returnByte + typeSectionSize
+    bytes += numOfParams + paramBytes + '01' + returnByte
   })
-
+  let numOfFuncs = ast.mods[0].funcs.length
+  let funcSecSize = (numOfFuncs + 1).toString(16)
+  numOfFuncs = numOfFuncs.toString(16)
+  if (numOfFuncs.length < 2) numOfFuncs = `0${numOfFuncs}`
+  if (funcSecSize.length < 2) funcSecSize = `0${funcSecSize}`
+  sigs = ast.mods[0].funcs.reduce((acc, cur, i) => {
+    let byte = i.toString(16)
+    console.log({byte})
+    if (byte.length < 2) byte = `0${byte}`
+    return acc + byte
+  }, '')
+  bytes += numOfFuncs + sigs + funcSecSize
   return "COMPILE"
 }
 
