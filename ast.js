@@ -3,7 +3,6 @@ const astBuilder = (tokens) => {
   let curModule
   let funcDef
   while (tokens.length > 0) {
-    console.log(tokens)
     switch(tokens[0].type) {
       case "LPAR":
         tokens.shift()
