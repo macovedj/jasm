@@ -31,6 +31,7 @@ const compile = async (tokens) => {
     }
     bytes += numOfParams + paramBytes + '01' + returnByte
   })
+  // Function Section
   let numOfFuncs = ast.mods[0].funcs.length
   let funcSecSize = (numOfFuncs + 1).toString(16)
   numOfFuncs = numOfFuncs.toString(16)
@@ -42,7 +43,8 @@ const compile = async (tokens) => {
     if (byte.length < 2) byte = `0${byte}`
     return acc + byte
   }, '')
-  bytes += numOfFuncs + sigs + funcSecSize
+  bytes += "03" + funcSecSize + numOfFuncs + sigs
+  // Export Section
   return "COMPILE"
 }
 
