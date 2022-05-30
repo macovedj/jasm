@@ -1,14 +1,14 @@
 const fs = require('fs');
 const { tokenTypes } = require('./tokens')
 
-const parse = async (file) => { 
-  console.log({file})
+const parse = async (file) => {
   const bytes = await fs.readFileSync(file)
   let text = bytes.toString().replace(/\n/g, '').split(' ')
   .map(w => w.trim())
   .filter(x => x.length > 0)
   .join(' ')
   .split('')
+  console.log({text})
 
   const tokens = text.reduce((acc, cur) => {
     let {curToken, tokenized} = acc
@@ -18,8 +18,14 @@ const parse = async (file) => {
         return {curToken: [], tokenized}
       case ")":
         switch(curToken.join('')) {
-          case "module":
-            tokenized.push({type: tokenTypes.MOD, value: "module"})
+          case "const":
+            tokenized.push({type: tokenTypes.CONST, value: "const"})
+            break;
+          case "=":
+            tokenized.push({type: tokenTypes.ASSIGN, value: "assign"})
+            break;
+          case "=>":
+            tokenized.push({type: tokenTypes.FAT_ARROW, value: "fat_arrow"})
             break;
           case "func":
             tokenized.push({type: tokenTypes.FUNC, value: "func"})
@@ -29,18 +35,6 @@ const parse = async (file) => {
             break;
           case "param":
             tokenized.push({type: tokenTypes.PARAMDECL, value: "param"})
-            break;
-          case "i32":
-            tokenized.push({type: tokenTypes.PARAM, value: "i32"})
-            break;
-          case "result":
-            tokenized.push({type: tokenTypes.RESULT, value: "result"})
-            break;
-          case "local.get":
-            tokenized.push({type: tokenTypes.LOCAL_GET, value: "local.get"})
-            break;
-          case "i32.add":
-            tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
             break;
           default:
             if (curToken.join('') !== '') {
@@ -52,8 +46,14 @@ const parse = async (file) => {
         return {curToken: [], tokenized}
       case " ":
         switch(curToken.join('')) {
-          case "module":
-            tokenized.push({type: tokenTypes.MOD, value: "module"})
+          case "const":
+            tokenized.push({type: tokenTypes.CONST, value: "const"})
+            return {curToken: [], tokenized}
+          case "=":
+            tokenized.push({type: tokenTypes.ASSIGN, value: "assign"})
+            return {curToken: [], tokenized}
+          case "=>":
+            tokenized.push({type: tokenTypes.FAT_ARROW, value: "fat_arrow"})
             return {curToken: [], tokenized}
           case "func":
             tokenized.push({type: tokenTypes.FUNC, value: "func"})
@@ -64,22 +64,13 @@ const parse = async (file) => {
           case "param":
             tokenized.push({type: tokenTypes.PARAMDECL, value: "param"})
             return {curToken: [], tokenized}
-          case "i32":
-            tokenized.push({type: tokenTypes.PARAM, value: "i32"})
-            return {curToken: [], tokenized}
           case "result":
             tokenized.push({type: tokenTypes.RESULT, value: "result"})
-            return {curToken: [], tokenized}
-          case "local.get":
-            tokenized.push({type: tokenTypes.LOCAL_GET, value: "local.get"})
-            return {curToken: [], tokenized}
-          case "i32.add":
-            tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
             return {curToken: [], tokenized}
           case "":
             return {curToken: [], tokenized}
           default:
-            tokenized.push({type: tokenTypes.LITERAL, value: curToken})
+            tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
             return {curToken: [], tokenized}
         }
       default:
@@ -87,7 +78,10 @@ const parse = async (file) => {
         return acc
     }
   }, {curToken: [], tokenized: []})
+  console.log(tokens.tokenized)
   return tokens.tokenized
 }
+
+parse('./js2wat/hello.js')
 
 module.exports = {parse}
