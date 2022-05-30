@@ -1,4 +1,6 @@
 const fs = require('fs');
+const { compile } = require('./compiler')
+const { parser } = require('./parser')
 const bytes3 = fs.readFileSync('./add3.wasm');
 const bytes2 = fs.readFileSync('./add2.wasm');
 
@@ -10,8 +12,12 @@ const hard3 = new Uint8Array('0061736d01000000010e0260027f7f017f60037f7f7f017f03
 console.log("hard bytes two:", hard)
 console.log("hard bytes three", hard3)
 
-
 const execute = async () => {
+  const parsed = await parser()
+  const jasmBytes = await compile(parsed)
+  const jasmModule = await WebAssembly.compile(jasmBytes);
+  const jasmInstance = await WebAssembly.instantiate(jasmModule);
+  console.log("JASM CALL", jasmInstance.exports.addTwo(25,3))
   const hardModule = await WebAssembly.compile(hard);
   const hardInstance = await WebAssembly.instantiate(hardModule);
   console.log(hardInstance.exports.addTwo(13, 5));
@@ -23,5 +29,4 @@ const execute = async () => {
   const compiledInstance = await WebAssembly.instantiate(compiledModule);
   console.log(compiledInstance.exports.addTwo(13, 5));
 }
-
 execute()
