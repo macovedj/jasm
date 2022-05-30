@@ -10,8 +10,9 @@ const parse = async (file) => {
   .split('')
   console.log({text})
 
-  const tokens = text.reduce((acc, cur) => {
+  const tokens = text.reduce((acc, cur, i) => {
     let {curToken, tokenized} = acc
+    console.log({curToken})
     switch(cur) {
       case "(":
         tokenized.push({ type: tokenTypes.LPAR, value: "("})
@@ -37,6 +38,7 @@ const parse = async (file) => {
             tokenized.push({type: tokenTypes.PARAMDECL, value: "param"})
             break;
           default:
+            console.log("DEFAULT")
             if (curToken.join('') !== '') {
               tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
             }
@@ -75,10 +77,14 @@ const parse = async (file) => {
         }
       default:
         curToken.push(cur)
+        if (i === text.length - 1) {
+          tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
+          return { tokenized }
+        }
         return acc
     }
   }, {curToken: [], tokenized: []})
-  console.log(tokens.tokenized)
+
   return tokens.tokenized
 }
 

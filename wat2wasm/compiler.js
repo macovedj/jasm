@@ -3,7 +3,6 @@ const { astBuilder } = require('./ast')
 
 const compile = async (file) => {
   const tokens = await parse(file)
-
   const ast = astBuilder(tokens)
   
   let bytes = "0061736d0100000001"

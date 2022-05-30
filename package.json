@@ -7,7 +7,8 @@
     "PRINT": "echo 'HELLO'",
     "execute": "node ./wat2wasm/execute.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "parse:js": "node ./js2wat/js2wat.js hello.js"
+    "parse:js": "node ./js2wat/parse.js hello.js",
+    "compile:js": "node ./js2wat/compile.js hello.js"
   },
   "keywords": [],
   "author": "",
