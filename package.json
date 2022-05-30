@@ -4,6 +4,8 @@
   "description": "wat2wasm implemented in js",
   "main": "ast.js",
   "scripts": {
+    "PRINT": "echo 'HELLO'",
+    "execute": "node ./wat2wasm/execute.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

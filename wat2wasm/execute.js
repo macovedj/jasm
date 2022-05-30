@@ -1,8 +1,7 @@
 const fs = require('fs');
 const { compile } = require('./compiler')
-const { parse } = require('./parser')
-const bytes3 = fs.readFileSync('./add3.wasm');
-const bytes2 = fs.readFileSync('./add2.wasm');
+const bytes3 = fs.readFileSync('./wat2wasm/add3.wasm');
+const bytes2 = fs.readFileSync('./wat2wasm/add2.wasm');
 
 console.log("compiled bytes three:", bytes3.toString('hex').match(/../g).join(' '))
 console.log("compiled bytes two", bytes2)
@@ -14,8 +13,7 @@ console.log("hard bytes two:", hard)
 console.log("hard bytes three", hard3)
 
 const execute = async () => {
-  // console.log(process.argv)
-  const jasmBytes = await compile(`./${process.argv[2]}`)
+  const jasmBytes = await compile(process.argv[2])
   const jasmModule = await WebAssembly.compile(jasmBytes);
   const jasmInstance = await WebAssembly.instantiate(jasmModule);
   console.log("JASM CALL ADD TWO", jasmInstance.exports.addTwo(25,3))
