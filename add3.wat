@@ -8,4 +8,4 @@
     local.get 1
     local.get 2
     i32.add
-	i32.add))
+	  i32.add))

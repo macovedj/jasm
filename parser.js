@@ -1,8 +1,9 @@
 const fs = require('fs');
 const { tokenTypes } = require('./tokens')
 
-const parser = async () => { 
-  const bytes = await fs.readFileSync('./add2.wat')
+const parse = async (file) => { 
+  console.log({file})
+  const bytes = await fs.readFileSync(file)
   let text = bytes.toString().replace(/\n/g, '').split(' ')
   .map(w => w.trim())
   .filter(x => x.length > 0)
@@ -89,4 +90,4 @@ const parser = async () => {
   return tokens.tokenized
 }
 
-module.exports = {parser}
+module.exports = {parse}

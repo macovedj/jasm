@@ -1,16 +1,18 @@
-const { parser } = require('./parser')
+const { parse } = require('./parser')
 const { astBuilder } = require('./ast')
 
-const compile = async (tokens) => {
+const compile = async (file) => {
+  const tokens = await parse(file)
+
   const ast = astBuilder(tokens)
   
   let bytes = "0061736d0100000001"
   let numOfSections = ast.mods[0].funcs.length.toString(16)
   if (numOfSections.length < 2) numOfSections = `0${numOfSections}`
-  let typeSectionSize = ast.mods[0].funcs.reduce((acc, cur) => {
-  //  5 comes from func type of 0x60, num of params, enumeration or params, num of results, enumeration of results
-   return acc + 5 + cur.params.length
-  }, 0).toString(16)
+  let typeSectionSize = (ast.mods[0].funcs.reduce((acc, cur) => {
+  //  4 comes from func type of 0x60, num of params, enumeration or params, num of results, enumeration of results
+   return acc + 4 + cur.params.length
+  }, 0) + 1).toString(16)
   if (typeSectionSize.length < 2) typeSectionSize = `0${typeSectionSize}`
   bytes += typeSectionSize + numOfSections
   ast.mods[0].funcs.forEach((curFunc) => {
@@ -62,6 +64,7 @@ const compile = async (tokens) => {
     bytes += "07" + exportSecSize + hexNumExp + strings
   }
   // Code section
+  // console.log({bytes})
   let codes = ast.mods[0].funcs.map(f => f.body).reduce((allBodies, curBody) => {
     let bodyLength = (curBody.length + 2).toString(16)
     if (bodyLength.length < 2) bodyLength = `0${bodyLength}`
@@ -71,6 +74,7 @@ const compile = async (tokens) => {
         case "LOCAL_GET":
           return acc + "20"
         case "LITERAL":
+          console.log({cur})
           let literal = cur.value.join().toString(16)
           if (literal.length < 2) literal = `0${literal}`
           return acc + literal
@@ -84,7 +88,9 @@ const compile = async (tokens) => {
   if (codeSecSize.length < 2) codeSecSize = `0${codeSecSize}` 
   bytes += "0a" + codeSecSize + numOfFuncs + codes
   // Name section
+  console.log({bytes})
   return new Uint8Array(bytes.match(/../g).map(h=>parseInt(h,16))).buffer
 }
+// compile()
 
 module.exports = {compile}
