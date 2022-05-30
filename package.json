@@ -1,0 +1,12 @@
+{
+  "name": "jasm",
+  "version": "1.0.0",
+  "description": "wat2wasm implemented in js",
+  "main": "ast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
