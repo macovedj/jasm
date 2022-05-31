@@ -8,7 +8,7 @@
     "execute": "node ./wat2wasm/execute.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "parse:js": "node ./js2wat/parse.js hello.js",
-    "compile:js": "node ./js2wat/compile.js hello.js"
+    "compile:js": "node ./js2wat/compile.js"
   },
   "keywords": [],
   "author": "",

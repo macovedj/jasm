@@ -8,11 +8,9 @@ const parse = async (file) => {
   .filter(x => x.length > 0)
   .join(' ')
   .split('')
-  console.log({text})
 
   const tokens = text.reduce((acc, cur, i) => {
     let {curToken, tokenized} = acc
-    console.log({curToken})
     switch(cur) {
       case "(":
         tokenized.push({ type: tokenTypes.LPAR, value: "("})
@@ -38,13 +36,22 @@ const parse = async (file) => {
             tokenized.push({type: tokenTypes.PARAMDECL, value: "param"})
             break;
           default:
-            console.log("DEFAULT")
             if (curToken.join('') !== '') {
               tokenized.push({type: tokenTypes.LITERAL, value: curToken.join('')})
             }
             break;
         }
         tokenized.push({ type: tokenTypes.RPAR, value: ")"})
+        return {curToken: [], tokenized}
+      case '"':
+        text.splice(i, 1)
+        let str = ''
+        while (text[i] !== '"') {
+          str += text[i]
+          text.splice(i, 1)
+        }
+        text.splice(i, 1)
+        tokenized.push({ type: tokenTypes.STR_LITERAL, value: str})
         return {curToken: [], tokenized}
       case " ":
         switch(curToken.join('')) {
@@ -87,7 +94,5 @@ const parse = async (file) => {
 
   return tokens.tokenized
 }
-
-parse('./js2wat/hello.js')
 
 module.exports = {parse}
