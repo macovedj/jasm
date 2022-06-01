@@ -2,6 +2,7 @@ const astBuilder = (tokens) => {
   let ast = {mods: []}
   let curModule
   let funcDef
+  console.log({tokens})
   while (tokens.length > 0) {
     switch(tokens[0].type) {
       case "LPAR":

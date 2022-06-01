@@ -2,7 +2,9 @@ const { parse } = require('./parser')
 const { astBuilder } = require('./ast')
 
 const compile = async (file) => {
+  console.log({file})
   const tokens = await parse(file)
+  console.log({tokens})
   const ast = astBuilder(tokens)
   
   let bytes = "0061736d0100000001"
@@ -90,6 +92,6 @@ const compile = async (file) => {
   console.log({bytes})
   return new Uint8Array(bytes.match(/../g).map(h=>parseInt(h,16))).buffer
 }
-// compile()
+compile(process.argv[2])
 
 module.exports = {compile}

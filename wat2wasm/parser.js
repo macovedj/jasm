@@ -21,6 +21,9 @@ const parse = async (file) => {
           case "module":
             tokenized.push({type: tokenTypes.MOD, value: "module"})
             break;
+          case "data":
+            tokenized.push({type: tokenTypes.DATA, value: "data"})
+            break;
           case "func":
             tokenized.push({type: tokenTypes.FUNC, value: "func"})
             break;
@@ -41,6 +44,9 @@ const parse = async (file) => {
             break;
           case "i32.add":
             tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
+            break;
+          case "i32.load8_u":
+            tokenized.push({type: tokenTypes.LOAD_U8, value: "i32.load8_u"})
             break;
           default:
             if (curToken.join('') !== '') {
@@ -55,6 +61,9 @@ const parse = async (file) => {
           case "module":
             tokenized.push({type: tokenTypes.MOD, value: "module"})
             return {curToken: [], tokenized}
+          case "data":
+            tokenized.push({type: tokenTypes.DATA, value: "data"})
+            return {curToken: [], tokenized}
           case "func":
             tokenized.push({type: tokenTypes.FUNC, value: "func"})
             return {curToken: [], tokenized}
@@ -75,6 +84,9 @@ const parse = async (file) => {
             return {curToken: [], tokenized}
           case "i32.add":
             tokenized.push({type: tokenTypes.ADD_I32, value: "i32.add"})
+            return {curToken: [], tokenized}
+          case "i32.load8_u":
+            tokenized.push({type: tokenTypes.LOAD_U8, value: "i32.load8_u"})
             return {curToken: [], tokenized}
           case "":
             return {curToken: [], tokenized}
